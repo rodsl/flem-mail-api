@@ -1,6 +1,5 @@
-// pages/api/hello.js
-import { sendMail } from "controllers";
 import nc from "next-connect";
+import { sendMailPortal_PPE } from "controllers/sendMailControllers";
 
 export default nc({
   onError: (err, req, res, next) => {
@@ -14,12 +13,17 @@ export default nc({
   .post(async (req, res) => {
     const { appSource } = req.query;
     try {
-      const response = await sendMail(appSource, req.body);
-      res.status(200).json(response);
+      switch (appSource) {
+        case "Portal_PPE":
+          const response = await sendMailPortal_PPE(appSource, req.body);
+          res.status(200).json(response);
+          break;
+
+        default:
+          res.status(405).json("Method Not Allowed");
+          break;
+      }
     } catch (error) {
       res.status(500).json(JSON.stringify(error));
     }
   })
-  .patch(async (req, res) => {
-    throw new Error("Throws me around! Error can be caught and handled.");
-  });

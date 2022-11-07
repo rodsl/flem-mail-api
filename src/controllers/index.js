@@ -1,1 +1,1 @@
-export { sendMail } from "./sendMailController";
+export { sendMail } from "./sendMailControllers";
